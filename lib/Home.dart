@@ -51,11 +51,13 @@ class _HomeState extends State<Home> {
                             FloatingActionButton(
                                 onPressed: () {
                                   print("selecionado sim");
+                                  Navigator.pop(context);
                                 },
                                 child: Text("sim")),
                             FloatingActionButton(
                                 onPressed: () {
                                   print("selecionado não");
+                                  Navigator.pop(context);
                                 },
                                 child: Text("Não")),
                           ],
