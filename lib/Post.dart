@@ -6,6 +6,15 @@ class Post {
 
   Post(this._userId, this._body, this._id, this._title);
 
+  Map toJson() {
+    return {
+      "userId": this._userId,
+      "id": this._id,
+      "title": this._title,
+      "body": this._body,
+    };
+  }
+
   String get body => _body;
 
   set body(String value) {
