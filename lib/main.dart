@@ -11,24 +11,84 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final player = AudioPlayer();
+  var player = AudioPlayer();
+  bool primeiraExecucao = true;
+  double volume = 0.5;
 
   _executar() async {
-    await player.play(AssetSource('audios/musica.mp3'));
+    player.setVolume(volume);
+    if (primeiraExecucao) {
+      await player.play(AssetSource('audios/musica.mp3'));
+      primeiraExecucao = false;
+    } else {
+      player.resume();
+    }
+  }
 
-    /*
-    String url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3";
-    int resultado = await audioPlayer.play(url);
+  _pausar() async {
+    await player.pause();
+  }
 
-    if( resultado == 1 ){
-      //sucesso
-    }*/
+  _parar() async {
+    await player.stop();
   }
 
   @override
   Widget build(BuildContext context) {
     _executar();
 
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Executando sons"),
+      ),
+      body: Column(
+        children: <Widget>[
+          Slider(
+              value: volume,
+              min: 0,
+              max: 1,
+              divisions: 10,
+              onChanged: (novoVolume) {
+                setState(() {
+                  volume = novoVolume;
+                });
+                player.setVolume(novoVolume);
+              }),
+          //Slider
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: GestureDetector(
+                  child: Image.asset("assets/images/executar.png"),
+                  onTap: () {
+                    _executar();
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: GestureDetector(
+                  child: Image.asset("assets/images/pausar.png"),
+                  onTap: () {
+                    _pausar();
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: GestureDetector(
+                  child: Image.asset("assets/images/parar.png"),
+                  onTap: () {
+                    _parar();
+                  },
+                ),
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
